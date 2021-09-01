@@ -67,6 +67,18 @@
             tools:text="&quot;Tuna&quot;" />
 
         <TextView
+            android:id="@+id/hint_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@{gameViewModel.wordHint}"
+            app:layout_constraintTop_toBottomOf="@id/word_text"
+            app:layout_constraintBottom_toTopOf="@id/timer_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Current word has 4 letters\nThe letter at position 4 is A"/>
+
+        <TextView
             android:id="@+id/timer_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

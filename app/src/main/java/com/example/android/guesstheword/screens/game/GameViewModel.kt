@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
-class GameViewModel: ViewModel() {
+class GameViewModel : ViewModel() {
 
     // The current word
     private val _word = MutableLiveData<String>()
@@ -27,18 +27,23 @@ class GameViewModel: ViewModel() {
 
     // Countdown time
     private val _currentTime = MutableLiveData<Long>()
-    val currentTime: LiveData<Long>
+    private val currentTime: LiveData<Long>
         get() = _currentTime
 
     val currentTimeString: LiveData<String> = Transformations.map(currentTime) { time ->
         DateUtils.formatElapsedTime(time)
     }
 
+    // Word hint
+    val wordHint: LiveData<String> = Transformations.map(word) { word ->
+        val randomPosition = (1..word.length).random()
+        "Current word has ${word.length} letters\nThe letter at position $randomPosition is ${word[randomPosition - 1].toUpperCase()}"
+    }
+
     // The list of words - the front of the list is the next word to guess
     lateinit var wordList: MutableList<String>
 
     private val timer: CountDownTimer
-
 
 
     /**
@@ -72,7 +77,6 @@ class GameViewModel: ViewModel() {
     }
 
 
-
     companion object {
         // Time when the game is over
         private const val DONE = 0L
@@ -81,9 +85,8 @@ class GameViewModel: ViewModel() {
         private const val ONE_SECOND = 1000L
 
         // Total time for the game
-        private const val COUNTDOWN_TIME = 10000L
+        private const val COUNTDOWN_TIME = 60000L
     }
-
 
 
     init {
@@ -111,7 +114,6 @@ class GameViewModel: ViewModel() {
     }
 
 
-
     /**
      * Moves to the next word in the list
      */
@@ -123,7 +125,6 @@ class GameViewModel: ViewModel() {
             _word.value = wordList.removeAt(0)
         }
     }
-
 
 
     /** Methods for buttons presses **/
